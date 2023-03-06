@@ -6,16 +6,13 @@ import numpy as np
 
 
 def scrap_data(url:str) -> List[List]:
-    
-    '''
-    Get raw text data using urlopen and bs4 packages, then convert it to a list of lists
+    ''' Get raw text data using urlopen and bs4 packages, then convert it to a list of lists
     
     :param url: website url
     :type url: str
     :return: unformatted list of lists, i.e. a table in the form of 2 lists
     :rtype: List[List]
     '''
-
     # Use context manager to get the website's content
     with urlopen(url=url) as f:
         html = f.read().decode('utf-8')
@@ -35,16 +32,13 @@ def scrap_data(url:str) -> List[List]:
 
 
 def preprocess_data(table: List[List]) -> List[List]:
-    
-    '''
-    Remove empty strings in each list in a main list
+    ''' Remove empty strings in each list in a main list
     
     :param table: unformatted list of lists
     :type table: List[List]
     :return: formatted list of lists, i.e. a table in the form of 2 lists
     :rtype: List[List]
     '''
-    
     # Initialize an empty list
     table_preprocessed = []
     
@@ -65,16 +59,13 @@ def preprocess_data(table: List[List]) -> List[List]:
 
 
 def get_dataframe(table: List[List]) -> pd.DataFrame:
-    
-    '''
-    Create a dataframe from the list of lists and then format it from long to wide format
+    ''' Create a dataframe from the list of lists and then format it from long to wide format
     
     :param table: formatted list of lists, i.e. a table in the form of 2 lists
     :type table: List[List]
     :return: dataframe with a 'datetime' index and a 'value' column
     :rtype: pd.DataFrame
     '''
-    
     df = pd.DataFrame(data=table)
     df = df.rename(columns={0: 'year'})
     df = pd.melt(frame=df, id_vars='year', value_vars=df.columns[1:], var_name='month')
@@ -89,7 +80,6 @@ def get_dataframe(table: List[List]) -> pd.DataFrame:
 
 # if __name__ == "__main__" idiom is a way to store code that should only run when the file is executed as a script
 if __name__ == '__main__':
-    
     url = 'http://climexp.knmi.nl/data/icpc_nao.dat'
     data_raw = scrap_data(url=url)
     data_preprocessed = preprocess_data(table=data_raw)
